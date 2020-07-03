@@ -1,0 +1,160 @@
+//Split using float Key(Optinal)
+void split(float cgpa,BST& newTree)
+	{
+		Node* tmp = root;
+		splitrec(tmp,newTree,cgpa);
+		deleteSpliting(root, cgpa);
+		if (newTree.root == nullptr)
+		{
+			cout << "No less then or equal to " << cgpa << " CGPA found!";
+		}
+	}
+
+//Split Recursive Function
+void splitrec(Node* r,BST& newTree, float cgpa)
+	{
+		if (r == nullptr)
+			return;
+
+		if (r->CGPA <= cgpa)
+		{
+			newTree.insert(r->id, r->name, r->marks, r->CGPA);
+		}
+		splitrec(r->left, newTree, cgpa);
+		
+		splitrec(r->right, newTree, cgpa);
+	}
+//Calling Split Deletion
+void deleteSpliting(Node* r, float cgpa)
+	{
+		if (r == nullptr)
+			return;
+		if (r->CGPA <= cgpa)
+			deleteNode(r->id);
+		deleteSpliting(root->left, cgpa);
+		deleteSpliting(root->right, cgpa);
+	}
+
+//Deletion Functions for BST
+
+
+//findnig Minimum Valued Node
+	Node * minValueNode(Node* node)
+	{
+		Node* current = node;
+		while (current && current->left != NULL)
+			current = current->left;
+		return current;
+	}
+	//Deleteing Given ID
+	void deleterec(Node* root, int key)
+	{
+		if (root == nullptr)
+			return;
+		if (root->id == key)
+		{
+			root = removeroot();
+			return;
+		}
+		else
+		{
+			if (key < root->id && root->left != nullptr)
+			{
+				if (root->left->id == key)
+					removeMatch(root, root->left, true);
+				else
+					deleterec(root->left, key);
+				return;
+			}
+			else if (key > root->id && root->right != nullptr)
+			{
+				if (root->right->id == key)
+					removeMatch(root, root->right, false);
+				else
+					deleterec(root->right, key);
+				return;
+			}
+		}
+		cout << endl << "Key Doesn't exist in the tree!!" << endl;
+	}
+	//Removing Root from tree.
+	Node* removeroot()
+	{
+		Node* deletePtr = root;
+		int rootid = root->id;
+		Node* smallestInright = nullptr;
+		//case 0 - 0 child
+		if (root->left == nullptr && root->right == nullptr)
+		{
+			root = nullptr;
+			return root;
+		}
+		//case 1 - 1 child
+		else if (root->left == nullptr && root->right != nullptr)
+		{
+			root = root->right;
+			deletePtr->right = nullptr;
+			delete deletePtr;
+		}
+		else if (root->left != nullptr && root->right == nullptr)
+		{
+			root = root->left;
+			deletePtr->left = nullptr;
+			delete deletePtr;
+		}
+		//case 2 - 2 child
+		else
+		{
+			smallestInright = minValueNode(root);
+			deleterec(root, smallestInright->id);
+			root->id = smallestInright->id;
+			root->marks = smallestInright->marks;
+			root->name = smallestInright->name;
+			root->CGPA = smallestInright->CGPA;
+		}
+	}
+	//Remove Node from tree.
+	void removeMatch(Node* root, Node* match, bool check)
+	{
+		if (root == nullptr)
+			return;
+		Node* deletePtr = root;
+		int rootid = root->id;
+		Node* smallestInright = nullptr;
+		//case 0 - 0 child
+		if (match->left == nullptr && match->right == nullptr)
+		{
+			deletePtr = match;
+			if (check == true)
+				root->left = nullptr;
+			else
+				root->right = nullptr;
+		}
+		//case 1 - 1 child
+		else if (match->left == nullptr && match->right != nullptr)
+		{
+			if (check == true)
+				root->left = match->right;
+			else
+				root->right = match->right;
+			match->right = nullptr;
+		}
+		else if (match->left != nullptr && match->right == nullptr)
+		{
+			if (check == true)
+				root->left = match->left;
+			else
+				root->right = match->left;
+			match->left = nullptr;
+		}
+		//case 2 - 2 child
+		else
+		{
+			smallestInright = minValueNode(root->right);
+			deleterec(match, smallestInright->id);
+			match->id = smallestInright->id;
+			match->marks = smallestInright->marks;
+			match->name = smallestInright->name;
+			match->CGPA = smallestInright->CGPA;
+		}
+	}
