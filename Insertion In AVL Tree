@@ -1,0 +1,84 @@
+//Finding depth
+	int depth(Node* ro)
+	{
+		if (ro == nullptr)
+			return 0;
+		int l = depth(ro->left);
+		int r = depth(ro->right);
+		return (r > l) ? r : l;
+	}
+  
+	//Balance Factor calculator
+	int checkBalanceFactor(Node* r)
+	{
+		return depth(r->left) - depth(r->right);
+	}
+  
+	//Right Roation of tree Node
+	Node* rightRotation(Node* r)
+	{
+		Node* tmp = r->left;
+		r->left = tmp->right;
+		tmp->right = r;
+		return tmp;
+	}
+  
+	//Left Rotation of tree Node
+	Node* leftRotation(Node* r)
+	{
+		Node* tmp = r->left;
+		r->right = tmp->left;
+		tmp->left = r;
+		return tmp;
+	}
+  
+	//Recursive call of insertion
+	Node* insertrec(Node* r, int value)
+	{
+		//BaseCase of the call
+		if (r == nullptr)
+		{
+			Node* newNode = new Node;
+			newNode->data = value;
+			newNode->left = nullptr;
+			newNode->right = nullptr;
+			r = newNode;
+			return r;
+		}
+		//If value is < 
+		if (value < r->data)
+			r->left = insertrec(r->left, value);
+		else if (value > r->data)
+			r->right = insertrec(r->right, value);
+		else 
+			return r;
+		//Chceck if rotation needed
+
+		int balance = checkBalanceFactor(r);
+
+		if (balance > 1 || balance < -1)
+		{
+			if (balance > 1 && value < r->left->data)
+				return rightRotation(r);
+			if (balance < -1 && value > r->right->data)
+				return leftRotation(r);
+			if (balance > 1 && value > r->left->data)
+			{
+				r->left = leftRotation(r->left);
+				return rightRotation(r);
+			}
+			if (balance < -1 && value < r->right->data)
+			{
+				r->right = rightRotation(r->right);
+				return leftRotation(r);
+			}
+		}
+		return r;
+	}
+  
+  //Insert function
+	void insert(int value)
+	{
+		root = insertrec(root, value);
+	}
+
