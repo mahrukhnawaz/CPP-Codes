@@ -1,0 +1,40 @@
+//Find Parent
+	int getParent(int i)
+	{
+		return i / 2;
+	}
+  
+  
+	//Insertion Recurtion
+	void insertrec(int i)
+	{
+		if (i >= data.size() || i == 1)
+			return;
+		if (getParent(i) < data.size() && data[i] > data[getParent(i)])
+			swap(data[i], data[getParent(i)]);
+
+		insertrec(getParent(i));
+	}
+
+
+//Insertion for Max Heap --Recursive
+	void insert(int value)
+	{
+		data.push_back(value);
+		insertrec(data.size() - 1);
+	}
+
+
+
+//NON recursive Function
+	void insert(int value)
+	{
+		data.push_back(value);
+		int i = data.size() - 1;
+		while (i != 1)
+		{
+			if (data[i] > data[getParent(i)])
+				swap(data[i], data[getParent(i)]);
+			i = getParent(i);
+		}
+	}
