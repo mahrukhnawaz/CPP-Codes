@@ -1,0 +1,36 @@
+
+//Delete Front
+
+bool deleteFront()
+	{
+		if (isEmpty())
+			return false;
+		else if (Head == Tail)
+			Head = Tail = nullptr;
+		else
+		{
+			Node<T>* tmp = Head;
+			Head = Head->getNext();
+			Head->setPrevious(NULL);
+			delete tmp;
+		}
+		return true;
+	}
+  
+  
+	//Delete Last
+  bool deleteLast()
+	{
+		if (isEmpty())
+			return false;
+		else if (Head == Tail)
+			Head = Tail = nullptr;
+		else
+		{
+			Node<T>* tmp = Tail;
+			Tail = Tail->getPrevious();
+			Tail->setNext(NULL);
+			delete tmp;
+		}
+		return true;
+	}
