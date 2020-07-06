@@ -1,0 +1,84 @@
+//Insertion at front
+	void insertAtFront(T V)
+	{
+		Node<T>* N = new Node<T>(V);
+		if (isEmpty())
+			Head = Tail = N;
+		else
+		{
+			Node<T>* tmp = new Node<T>;
+			tmp=Head;
+			Head->setPrevious(N);
+			Head = N;
+			Head->setNext(tmp);
+		}
+	}
+  
+	//Insertion AT Tail
+	void insertAtTail(T V)
+	{
+		Node<T>* N = new Node<T>(V);
+		if (isEmpty())
+			Head = Tail = N;
+		else
+		{
+			Node<T>* tmp = new Node<T>;
+			tmp=Tail;
+			Tail->setNext(N);
+			Tail = N;
+			Tail->setPrevious(tmp);
+		}
+	}
+  
+	//Insertion After Data
+	bool insertAfter(T V, T Key)
+	{
+		Node<T>*N = new Node<T>(V);
+		Node<T>* P;
+		P = Head; bool flag=0;
+		while (P != nullptr)
+		{
+			if (P->Data == Key)
+			{
+				Node<T>* tmp;
+				tmp = P->getNext();
+				flag = 1;
+				P->setNext(N);
+				N->setNext(tmp);
+				N->setPrevious(P);
+				tmp->setPrevious(N);
+				break;
+			}
+			P = P->getNext();
+		}
+		if (flag == 0)
+			insertAtTail(V), flag = 1;
+		return flag;
+	}
+  
+	//Insertion Before Data
+	bool insertBefore(T V, T key)
+	{
+		Node<T>*N = new Node<T>(V);
+		Node<T>* P;
+		P = Head; bool flag = 0;
+		while (P!= nullptr)
+		{
+			if (P->Data == key)
+			{
+				P = P->getPrevious();
+				Node<T>* tmp = new Node<T>;
+				tmp = P->getNext();
+				P->setNext(N);
+				N->setPrevious(P);
+				N->setNext(tmp);
+				tmp->setPrevious(N);
+				flag = 1;
+				break;
+			}
+			P = P->getNext();
+		}
+		if (flag == 0)
+			insertAtTail(V),flag=1;
+		return flag;
+	}
