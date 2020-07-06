@@ -1,0 +1,21 @@
+T findKLastElement(int K)
+	{
+		if (isEmpty())
+			return 00;
+		Node<T>*P1 = Head; Node<T>*P2 = Head; int count = K;
+		while (count > 0)
+		{
+			P2 = P2->getNext();
+			if (P2 == nullptr)
+				return 0;
+			count--;
+		}
+		if (P1 == nullptr)
+			return 00;
+		while (P2 != nullptr)
+		{
+			P2 = P2->getNext();
+			P1 = P1->getNext();
+		}	
+		return P1->getData();
+	}
