@@ -1,0 +1,17 @@
+
+//Finding Middle Value
+T middleValue()
+	{
+		if (isEmpty())
+			return 00;
+		Node<T>* P1; Node<T>* P2;
+		P1 = Head; P2 = Head; T value = 00;
+		while (P2 != nullptr&&P2->getNext() != nullptr)
+		{
+			P1 = P1->getNext();
+			P2 = P2->getNext();
+			P2 = P2->getNext();
+		}
+		value = P1->getData();
+		return value;
+	}
